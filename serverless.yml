@@ -1,0 +1,25 @@
+service: short-bot
+
+provider:
+
+  name: aws
+
+  runtime: nodejs10.x
+
+  region: eu-west-1
+
+functions:
+
+  shortbot:
+
+    handler: handler.shortbot
+
+    events:
+
+      - http:
+
+          path: short-bot
+
+          method: post
+
+          cors: true
