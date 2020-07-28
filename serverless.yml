@@ -1,4 +1,6 @@
-service: short-bot
+org: jmeash
+app: london-transport
+service: london-transport-bot
 
 provider:
 
@@ -8,17 +10,20 @@ provider:
 
   region: eu-west-1
 
+plugins:
+  - serverless-offline
+
 functions:
 
-  shortbot:
+  ltbot:
 
-    handler: handler.shortbot
+    handler: handler.ltbot
 
     events:
 
       - http:
 
-          path: short-bot
+          path: ltbot
 
           method: post
 

@@ -1,50 +1,16 @@
-const rp = require('request-promise');
 require('dotenv').config();
-TELEGRAM_TOKEN = process.env.TELEGRAM_TOKEN;
 
-async function getShortUrl(longUrl) {
-    const options = {
-        method: 'POST',
-        uri: 'https://cleanuri.com/api/v1/shorten',
-        form: {
-            url: String(longUrl).trim()
-        },
-        json: true
-    };
+const { Telegraf } = require('telegraf');
+const TELEGRAM_TOKEN = process.env.TELEGRAM_TOKEN;
 
-    return rp(options);
+module.exports.ltbot = async event => {
+    let body = event.body[0] === '{' ? JSON.parse(event.body) : JSON.parse(Buffer.from(event.body, 'base64'));
+    const bot = new Telegraf(TELEGRAM_TOKEN);
+
+    await bot.start((ctx) => ctx.reply('Hello'));
+    await bot.help((ctx) => ctx.reply('Ask me for the status of a tube line'));
+    await bot.hears('Hi', (ctx) => ctx.reply('Hey there'));
+
+    await bot.handleUpdate(body);
+    return {statusCode: 200, body: ''};
 }
-
-async function sendToUser(chat_id, text) {
-    const options = {
-        method: 'GET',
-        uri: `https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`,
-        qs: {
-            chat_id,
-            text
-        }
-    };
-
-    return rp(options);
-}
-
-module.exports.shortbot = async event => {
-    const body = JSON.parse(event.body);
-    const {chat, text} = body.message;
-
-    if (text) {
-        let message = '';
-        try {
-            const result = await getShortUrl(text);
-            message = `Input: ${text}, \nShort: ${result.result_url}`;
-        } catch (error) {
-            message = `Input: ${text}, \nError: ${error.message}`;
-        }
-
-        await sendToUser(chat.id, message);
-    } else {
-        await sendToUser(chat.id, 'Text message is expected.');
-    }
-
-    return { statusCode: 200 };
-};

@@ -3,11 +3,9 @@
   "version": "1.0.0",
   "dependencies": {
     "dotenv": "^8.2.0",
-    "request": "^2.88.2",
-    "request-promise": "^4.2.5"
+    "telegraf": "^3.38.0"
   },
   "devDependencies": {
-    "request-promise": "^4.2.5",
-    "request": "^2.88.2"
+    "serverless-offline": "^6.5.0"
   }
 }
