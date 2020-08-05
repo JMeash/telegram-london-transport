@@ -1,0 +1,59 @@
+{
+  "tube_names": [
+    {
+      "id": "bakerloo",
+      "name": "Bakerloo",
+      "accepted_names": ["bakerloo","baker","brown"]
+    },
+    {
+      "id": "central",
+      "name": "Central",
+      "accepted_names": ["central","red"]
+    },
+    {
+      "id": "circle",
+      "name": "Circle",
+      "accepted_names": ["circle","yellow"]
+    },
+    {
+      "id": "district",
+      "name": "District",
+      "accepted_names": ["district","dist","green"]
+    },
+    {
+      "id": "hammersmith-city",
+      "name": "Hammersmith & City",
+      "accepted_names": ["hammersmith","hammer","city","pink"]
+    },
+    {
+      "id": "jubilee",
+      "name": "Jubilee",
+      "accepted_names": ["jubilee","jubi","grey"]
+    },
+    {
+      "id": "metropolitan",
+      "name": "Metropolitan",
+      "accepted_names": ["metropolitan","metro","purple","magenta"]
+    },
+    {
+      "id": "northern",
+      "name": "Northern",
+      "accepted_names": ["northern","north","black"]
+    },
+    {
+      "id": "picadilly",
+      "name": "Picadilly",
+      "accepted_names": ["picadilly","pica","blue"]
+    },
+    {
+      "id": "victoria",
+      "name": "Victoria",
+      "accepted_names": ["victoria","vic","light blue"]
+    },
+    {
+      "id": "waterloo-city",
+      "name": "Waterloo & City",
+      "accepted_names": ["waterloo","water","turquoise","light green"]
+    }
+  ]
+}
