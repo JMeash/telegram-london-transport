@@ -23,7 +23,7 @@
     {
       "id": "hammersmith-city",
       "name": "Hammersmith & City",
-      "accepted_names": ["hammersmith","hammer","city","pink"]
+      "accepted_names": ["hammersmith","hammer","hammersmith-city","hammersmith and city","city","pink"]
     },
     {
       "id": "jubilee",
@@ -53,7 +53,7 @@
     {
       "id": "waterloo-city",
       "name": "Waterloo & City",
-      "accepted_names": ["waterloo","water","turquoise","light green"]
+      "accepted_names": ["waterloo","water","waterloo-city","waterloo and city","turquoise","light green"]
     }
   ]
 }
