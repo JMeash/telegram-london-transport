@@ -1,7 +1,8 @@
 export namespace Line {
     export interface Status {
+        name: string,
         severity: string;
-        severityCode: string;
+        severityCode: number;
         disruption?: string;
         description?: string;
     }
