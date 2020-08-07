@@ -37,5 +37,5 @@ export async function requestLineStatus(line: string): Promise<Line.Status> {
         }
     }
 
-    throw new Error('Could not find a Line with that name')
+    throw new Error(`Could not find a Line with the name ${line}`)
 }
