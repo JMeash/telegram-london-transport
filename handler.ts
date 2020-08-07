@@ -1,10 +1,11 @@
 const config = require('./config');
 const { Telegraf } = require('telegraf');
-const { requestLineStatus } = require("./lib/tflRequester.ts");
-const { statusWriter } = require("./lib/helpers.ts");
+
+import { requestLineStatus } from './lib/tflRequester';
+import { statusWriter } from './lib/helpers';
 
 module.exports.ltbot = async event => {
-    let body = event.body[0] === '{' ? JSON.parse(event.body) : JSON.parse(Buffer.from(event.body, 'base64'));
+    let body = JSON.parse(event.body);
     const bot = new Telegraf(config.telegram.token);
 
     bot.start((ctx) => {
@@ -15,7 +16,7 @@ module.exports.ltbot = async event => {
     });
 
 
-    bot.hears(/How is [A-z]+\?$/, async (ctx) => {
+    bot.hears(/^How is (.+)\?$/, async (ctx) => {
         try{
             const result = await requestLineStatus(ctx.message.text.slice(7, -1));
             return ctx.reply(statusWriter(result));

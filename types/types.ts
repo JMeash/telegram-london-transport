@@ -10,6 +10,6 @@ export namespace Line {
     export interface Names {
         id: string;
         name: string;
-        accepted_names: string;
+        accepted_names: string[];
     }
 }

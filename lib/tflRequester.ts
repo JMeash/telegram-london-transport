@@ -1,8 +1,8 @@
 import {Line} from "../types/types";
-import config = require('../config');
+import config from '../config';
+import {tube_names} from '../types/lineNames.json';
 
 const axios = require('axios').default;
-const {tube_names} = require('../types/lineNames');
 
 function findMatchingLine(line:string): Line.Names[] {
     return tube_names.filter(item => item.accepted_names.indexOf(line.toLocaleLowerCase()) !== -1);
