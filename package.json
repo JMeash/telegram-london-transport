@@ -2,10 +2,15 @@
   "name": "telegram-london-transport",
   "version": "1.0.0",
   "dependencies": {
-    "dotenv": "^8.2.0",
-    "telegraf": "^3.38.0"
+    "@types/node": "^14.0.27",
+    "telegraf": "^3.38.0",
+    "axios": "^0.19.2"
   },
   "devDependencies": {
-    "serverless-offline": "^6.5.0"
+    "serverless-dotenv-plugin": "^3.0.0",
+    "serverless-offline": "^6.5.0",
+    "serverless-plugin-typescript": "^1.1.9",
+    "ts-node": "^8.10.2",
+    "typescript": "^3.9.7"
   }
 }

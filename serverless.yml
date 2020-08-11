@@ -5,14 +5,14 @@ service: london-transport-bot
 provider:
 
   name: aws
-
-  runtime: nodejs10.x
-
-  region: eu-west-1
+  runtime: nodejs12.x
+  region: eu-west-2
+  stage: dev
 
 plugins:
+  - serverless-plugin-typescript
+  - serverless-dotenv-plugin
   - serverless-offline
-
 functions:
 
   ltbot:
