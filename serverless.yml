@@ -8,6 +8,17 @@ provider:
   runtime: nodejs12.x
   region: eu-west-2
   stage: dev
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource: ${env:DYNAMODB_ARN}
+
 
 plugins:
   - serverless-plugin-typescript
