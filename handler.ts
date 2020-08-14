@@ -1,4 +1,5 @@
 import { requestLineStatus, findMatchingLine} from './lib/tflRequester';
+import * as dynamodb from './lib/db';
 import { statusWriter } from './lib/helpers';
 
 const config = require('./config');
@@ -20,7 +21,7 @@ module.exports.ltbot = async event => {
             return ctx.reply('I am *London Transporter*, and will help you during your commute! \n\n' +
                 'These are the commands you can use: \n\n' +
                 '/ask _central_ - Ask for the current status of a line \n' +
-                '/setcommute _central_ _victoria_ - Set your commute \n' +
+                '/setcommute _central_ _victoria_ - Set your commute, you can only have one active commute \n' +
                 '\n\n' +
                 'You can also ask me stuff in a more natural way. I will answer! \n' +
                 'How is _central_? - Ask for the current status of a line', markup);
@@ -53,7 +54,11 @@ module.exports.ltbot = async event => {
                 for (const line of lines){
                     commute.push(findMatchingLine(line).id);
                 }
-                //TODO save commute
+                await dynamodb.writeCommute(
+                    {
+                        commute,
+                        telegram_id: ctx.from.id,
+                    });
                 await ctx.reply(`Okay! Your commute has been set! \n${commute.toString()}`);
             } catch (e) {
                 return ctx.reply(`⚠ There was an error ⚠\n${e.message}`)
@@ -62,12 +67,15 @@ module.exports.ltbot = async event => {
         bot.command('setcommute', async (ctx) => {
             return ctx.reply('Set your commute by adding the lines you want to set after the command /setcommute');
         });
-        /*bot.command('/deletecommute', async (ctx) => {
-            return ctx.reply('');
+
+        bot.command('deletecommute', async (ctx) => {
+            dynamodb.deleteCommute(ctx.from.id);
+            return ctx.reply('Okay! Your commute has been deleted!');
         });
+
         bot.command('showcommute', async (ctx) => {
             return ctx.reply('Okay');
-        });*/
+        });
 
         await bot.handleUpdate(body);
         return {statusCode: 200};

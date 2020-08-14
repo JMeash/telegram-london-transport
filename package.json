@@ -4,7 +4,8 @@
   "dependencies": {
     "@types/node": "^14.0.27",
     "telegraf": "^3.38.0",
-    "axios": "^0.19.2"
+    "axios": "^0.19.2",
+    "aws-sdk": "^2.733.0"
   },
   "devDependencies": {
     "serverless-dotenv-plugin": "^3.0.0",

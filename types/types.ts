@@ -13,3 +13,10 @@ export namespace Line {
         accepted_names: string[];
     }
 }
+export namespace DynamoDB {
+    export interface Commute {
+        "telegram_id": string,
+        "commute": string[],
+        "recurrent_hour"?: string,
+    }
+}
