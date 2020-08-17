@@ -34,3 +34,17 @@ export function deleteCommute (telegram_id: string){
         }
     });
 }
+
+export function getCommute (telegram_id: string){
+    let params = {
+        TableName: config.dynamodb.table_name,
+        Key: {
+            telegram_id
+        }
+    };
+    return documentClient.get(params, function (err) {
+        if (err) {
+            throw err;
+        }
+    }).promise();
+}
