@@ -67,7 +67,7 @@ module.exports.ltbot = async event => {
                         commute,
                         telegram_id: ctx.from.id,
                     });
-                await ctx.reply(`Okay! Your commute has been set! \n${commute.toString()}`);
+                return ctx.reply(`Okay! Your commute has been set! \n${commute.toString()}`);
             } catch (e) {
                 return ctx.reply(`${constants.text.error}${e.message}`)
             }
@@ -89,6 +89,24 @@ module.exports.ltbot = async event => {
         });
 
         await bot.handleUpdate(body);
+        return {statusCode: 200};
+    } catch (e) {
+        return {statusCode: 500, error: e.message};
+    }
+}
+
+module.exports.cron = async () => {
+    try {
+        const bot = new Telegraf(config.telegram.token);
+        const commutesToNotify = (await dynamodb.findCurrentCommutes()).Item;
+        if(commutesToNotify && Array.isArray(commutesToNotify)){
+            for (const commute of commutesToNotify){
+                const result = await requestCommuteStatus(commute.commute);
+                //TODO only show if there's a problem with one of the lines
+                await bot.telegram.sendMessage(commute.telegram_id, commuteStatusWriter(result), markup);
+            }
+        }
+        await bot.startPolling(2);
         return {statusCode: 200};
     } catch (e) {
         return {statusCode: 500, error: e.message};
