@@ -12,7 +12,7 @@ export function writeCommute (commute: DynamoDB.Commute){
         Item: {
             telegram_id: commute.telegram_id,
             commute: commute.commute,
-            recurrent_hour: commute.recurrent_hour || '08:00'
+            recurrent_hour: null
         }
     };
     documentClient.put(params, function (err) {
@@ -48,6 +48,24 @@ export async function getCommute (telegram_id: string){
             throw err;
         }
     }).promise();
+}
+
+export function writeCommuteRecurrentHour (telegram_id: string, recurrent_hour: string){
+    let params = {
+        TableName: config.dynamodb.table_name,
+        Key: {
+            telegram_id
+        },
+        UpdateExpression: 'set recurrent_hour = :x',
+        ExpressionAttributeValues: {
+            ':x': recurrent_hour,
+        }
+    };
+    return documentClient.update(params, function (err) {
+        if (err) {
+            throw err;
+        }
+    });
 }
 
 export async function findCurrentCommutes(){

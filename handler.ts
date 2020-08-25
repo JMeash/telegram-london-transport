@@ -88,6 +88,27 @@ module.exports.ltbot = async event => {
                 : ctx.reply(`You should set your commute first with /setcommute`);
         });
 
+        bot.hears(/^\/setnotification (.+)$/, async (ctx) => {
+            try {
+                const hour = (ctx.message.text.slice(17).trim().split(' '));
+                if(!/^(([0-1]?[0-9])|(2[0-3])):[0-5][05]$/.test(hour)){
+                   return ctx.reply(`${constants.text.error}Please enter a valid hour in a 24 hour format in multiples of 5 e.g., _08:15_`, markup);
+                }
+                const commuteItem = (await dynamodb.getCommute(ctx.from.id)).Item;
+                if (commuteItem && Array.isArray(commuteItem.commute) && commuteItem.commute.length){
+                    dynamodb.writeCommuteRecurrentHour(ctx.from.id, hour);
+                    return ctx.reply(`Your commute notifications are set to go off at *${hour}*`, markup);
+                } else {
+                   return ctx.reply(`${constants.text.error}You should set your commute first with /setcommute`);
+                }
+            } catch (e) {
+                return ctx.reply(`${constants.text.error}${e.message}`);
+            }
+        });
+        bot.command('setnotification', async (ctx) => {
+            return ctx.reply(constants.text.notification, markup);
+        });
+
         await bot.handleUpdate(body);
         return {statusCode: 200};
     } catch (e) {

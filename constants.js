@@ -18,6 +18,8 @@ Show me my commute! - Ask for the current status of your commute`;
 
 constants.text.start = `Hello, I am *London Transporter*. Set up your commute and never be surprised by the status of a line again!
 If you want to know how to use me, you can start by using /help`;
+constants.text.notification=`First make sure you have set up your commute with /setcommute\n
+Then use */setnotification XX:XX* to set a valid hour in a *24 hour format* in multiples of 5 e.g., _09:00_ at which you want me to check if your commute is doing okay!`
 constants.text.error = '⚠ There was an error ⚠\n';
 
 
