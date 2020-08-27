@@ -11,8 +11,7 @@ export function writeCommute (commute: DynamoDB.Commute){
         TableName: config.dynamodb.table_name,
         Item: {
             telegram_id: commute.telegram_id,
-            commute: commute.commute,
-            recurrent_hour: null
+            commute: commute.commute
         }
     };
     documentClient.put(params, function (err) {
@@ -56,10 +55,25 @@ export function writeCommuteRecurrentHour (telegram_id: string, recurrent_hour: 
         Key: {
             telegram_id
         },
-        UpdateExpression: 'set recurrent_hour = :x',
+        UpdateExpression: 'SET recurrent_hour = :x',
         ExpressionAttributeValues: {
             ':x': recurrent_hour,
         }
+    };
+    return documentClient.update(params, function (err) {
+        if (err) {
+            throw err;
+        }
+    });
+}
+
+export function deleteCommuteRecurrentHour (telegram_id: string){
+    let params = {
+        TableName: config.dynamodb.table_name,
+        Key: {
+            telegram_id
+        },
+        UpdateExpression: 'REMOVE recurrent_hour'
     };
     return documentClient.update(params, function (err) {
         if (err) {
@@ -72,11 +86,11 @@ export async function findCurrentCommutes(){
     const currentTime = moment(new Date()).tz("Europe/London").format('HH:mm');
     let params = {
         TableName: config.dynamodb.table_name,
-        Key: {
-            recurrent_hour: currentTime
-        }
+        FilterExpression : '#rh = :currentTime',
+        ExpressionAttributeNames: {'#rh': 'recurrent_hour'},
+        ExpressionAttributeValues : {':currentTime' : currentTime}
     };
-    return documentClient.get(params, function (err) {
+    return documentClient.scan(params, function (err) {
         if (err) {
             throw err;
         }

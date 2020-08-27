@@ -90,14 +90,14 @@ module.exports.ltbot = async event => {
 
         bot.hears(/^\/setnotification (.+)$/, async (ctx) => {
             try {
-                const hour = (ctx.message.text.slice(17).trim().split(' '));
-                if(!/^(([0-1]?[0-9])|(2[0-3])):[0-5][05]$/.test(hour)){
+                const hour = ctx.message.text.slice(17).trim();
+                if(!/^(([0-1][0-9])|(2[0-3])):[0-5][05]$/.test(hour)){
                    return ctx.reply(`${constants.text.error}Please enter a valid hour in a 24 hour format in multiples of 5 e.g., _08:15_`, markup);
                 }
                 const commuteItem = (await dynamodb.getCommute(ctx.from.id)).Item;
                 if (commuteItem && Array.isArray(commuteItem.commute) && commuteItem.commute.length){
                     dynamodb.writeCommuteRecurrentHour(ctx.from.id, hour);
-                    return ctx.reply(`Your commute notifications are set to go off at *${hour}*`, markup);
+                    return ctx.reply(`Okay! Your commute notifications are set to go off at *${hour}*`, markup);
                 } else {
                    return ctx.reply(`${constants.text.error}You should set your commute first with /setcommute`);
                 }
@@ -107,6 +107,10 @@ module.exports.ltbot = async event => {
         });
         bot.command('setnotification', async (ctx) => {
             return ctx.reply(constants.text.notification, markup);
+        });
+        bot.command('deletenotification', async (ctx) => {
+            dynamodb.deleteCommuteRecurrentHour(ctx.from.id);
+            return ctx.reply('Okay! Your commute notification has been deleted!');
         });
 
         await bot.handleUpdate(body);
@@ -119,7 +123,7 @@ module.exports.ltbot = async event => {
 module.exports.cron = async () => {
     try {
         const bot = new Telegraf(config.telegram.token);
-        const commutesToNotify = (await dynamodb.findCurrentCommutes()).Item;
+        const commutesToNotify = (await dynamodb.findCurrentCommutes()).Items;
         if(commutesToNotify && Array.isArray(commutesToNotify)){
             for (const commute of commutesToNotify){
                 const result = await requestCommuteStatus(commute.commute);
@@ -127,7 +131,6 @@ module.exports.cron = async () => {
                 await bot.telegram.sendMessage(commute.telegram_id, commuteStatusWriter(result), markup);
             }
         }
-        await bot.startPolling(2);
         return {statusCode: 200};
     } catch (e) {
         return {statusCode: 500, error: e.message};

@@ -23,7 +23,6 @@ provider:
 plugins:
   - serverless-plugin-typescript
   - serverless-dotenv-plugin
-  - serverless-offline
 
 functions:
 
@@ -35,10 +34,10 @@ functions:
           method: post
           cors: true
 
-#  cron:
-#    handler: handler.cron
-#    events:
-#      - schedule:
-#          name: cron-checks-commutes-notifications
-#          description: 'Checks if a commute should be checked and notified'
-#          rate: cron(0/5 5-23 ? * MON-FRI *)
+  cron:
+    handler: handler.cron
+    events:
+      - schedule:
+          name: cron-checks-commutes-notifications
+          description: 'Checks if a commute should be checked and notified'
+          rate: cron(0/5 5-23 ? * MON-FRI *)
