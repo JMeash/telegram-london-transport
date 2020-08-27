@@ -1,6 +1,6 @@
 import { requestLineStatus, requestCommuteStatus, findMatchingLine} from './lib/tflRequester';
 import * as dynamodb from './lib/db';
-import { statusWriter, commuteStatusWriter } from './lib/helpers';
+import { statusWriter, commuteStatusWriter, isCommuteCompromised } from './lib/helpers';
 import * as constants from './constants';
 
 const config = require('./config');
@@ -132,8 +132,9 @@ module.exports.cron = async () => {
         if(commutesToNotify && Array.isArray(commutesToNotify)){
             for (const commute of commutesToNotify){
                 const result = await requestCommuteStatus(commute.commute);
-                //TODO only show if there's a problem with one of the lines
-                await bot.telegram.sendMessage(commute.telegram_id, commuteStatusWriter(result), markup);
+                if(isCommuteCompromised(result)){
+                    await bot.telegram.sendMessage(commute.telegram_id, commuteStatusWriter(result), markup);
+                }
             }
         }
         return {statusCode: 200};

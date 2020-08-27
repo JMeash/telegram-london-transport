@@ -19,3 +19,7 @@ export function commuteStatusWriter(statuses: Line.Status[]) : string{
     }
     return reply;
 }
+
+export function isCommuteCompromised(statuses: Line.Status[]) : boolean{
+    return statuses.some(status => (status.severityCode !== 10 && status.severityCode !== 18));
+}

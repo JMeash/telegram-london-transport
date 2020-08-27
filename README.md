@@ -3,6 +3,7 @@
 [London Alerter Bot](https://t.me/LondonAlerterBot) is a minimalistic Telegram bot that connects to the TFL API
 and can be used to check the status of the transport in London. You can also set it up to notify you of problems in your commute.
 
+Currently, it only supports tube lines. There is a possibility that overground, tfl trains and buses are added in the future.
 
 ### Setting up
 
