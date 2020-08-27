@@ -17,6 +17,7 @@ module.exports.ltbot = async event => {
         bot.start((ctx) => {
             return ctx.reply(constants.text.start, markup)
         });
+
         bot.help((ctx) => {
             return ctx.reply(constants.text.help, markup);
         });
@@ -75,12 +76,10 @@ module.exports.ltbot = async event => {
         bot.command('setcommute', async (ctx) => {
             return ctx.reply('Set your commute by adding the lines you want to set after the command /setcommute\nCheck /help for examples!');
         });
-
         bot.command('deletecommute', async (ctx) => {
             dynamodb.deleteCommute(ctx.from.id);
             return ctx.reply('Okay! Your commute has been deleted!');
         });
-
         bot.command('showcommute', async (ctx) => {
             const commuteItem = (await dynamodb.getCommute(ctx.from.id)).Item;
             return (commuteItem && Array.isArray(commuteItem.commute) && commuteItem.commute.length)
@@ -111,6 +110,12 @@ module.exports.ltbot = async event => {
         bot.command('deletenotification', async (ctx) => {
             dynamodb.deleteCommuteRecurrentHour(ctx.from.id);
             return ctx.reply('Okay! Your commute notification has been deleted!');
+        });
+        bot.command('shownotification', async (ctx) => {
+            const commuteItem = (await dynamodb.getCommute(ctx.from.id)).Item;
+            return (commuteItem && commuteItem.recurrent_hour)
+                ? ctx.reply(`Your notification is set to go off at *${commuteItem.recurrent_hour}*`, markup)
+                : ctx.reply(`You should set your notification first with /setnotification`);
         });
 
         await bot.handleUpdate(body);
