@@ -2,6 +2,7 @@ import { requestLineStatus, requestCommuteStatus, findMatchingLine} from './lib/
 import * as dynamodb from './lib/db';
 import { statusWriter, commuteStatusWriter, isCommuteCompromised } from './lib/helpers';
 import * as constants from './constants';
+import moment from 'moment-timezone';
 
 const config = require('./config');
 const { Telegraf } = require('telegraf');
@@ -133,7 +134,11 @@ module.exports.cron = async () => {
             for (const commute of commutesToNotify){
                 const result = await requestCommuteStatus(commute.commute);
                 if(isCommuteCompromised(result)){
-                    await bot.telegram.sendMessage(commute.telegram_id, commuteStatusWriter(result), markup);
+                    await bot.telegram.sendMessage(
+                        commute.telegram_id,
+                        `Today, ${moment(new Date()).tz("Europe/London").format('dddd [the] Do [of] MMMM')}, your commute is disrupted:\n${commuteStatusWriter(result)}`,
+                        markup
+                    );
                 }
             }
         }

@@ -20,7 +20,31 @@ Finally, make sure you have a TFL developer API token.
 
 To run, make sure you create a .env with the necessary variables or substitute them in config.js.
 
-Finally, execute `serverless deploy`.
+Finally, execute `serverless deploy`. Link the lambda url to the telegram webhook with `https://api.telegram.org/<TOKEN>/setWebhook` by adding it to the body.
+
+### Usage
+
+These are the current commands:
+
+
+[/ask _central_]() - Ask for the current status of a line\
+[/ask _commute_]() - Ask for the status of your set commute\
+[/setcommute _central_ _victoria_]() - Set your commute by adding lines after the command, you can only have one active commute at a time\
+[/showcommute]() - Show the commute you have set\
+[/deletecommute]() - Delete your current commute. Please note if you delete or change your commute your notification will also be deleted\
+[/setnotification _08:15_]() - Set your notification time, you will be notified at the given time Monday to Friday if there is a problem in your commute\
+[/deletenotification]() - Delete your current notification time\
+[/shownotification]() - Show the notification you have set\
+
+
+The idea behind this bot is to set a commute and set a notification. An example of this interaction would be:
+
+```
+/setcommute central waterloo
+/setnotification 10:15
+```
+
+By doing this, every day between Monday and Friday at 10:15 there will be a check of the status. If one of the commute lines has a problem, then the bot will send a message informing you of the problem.
 
 ## Built With
 
