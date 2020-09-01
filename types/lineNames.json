@@ -41,9 +41,9 @@
       "accepted_names": ["northern","north","black"]
     },
     {
-      "id": "picadilly",
-      "name": "Picadilly",
-      "accepted_names": ["picadilly","pica","blue"]
+      "id": "piccadilly",
+      "name": "Piccadilly",
+      "accepted_names": ["piccadilly","pica","blue","picadilly"]
     },
     {
       "id": "victoria",
